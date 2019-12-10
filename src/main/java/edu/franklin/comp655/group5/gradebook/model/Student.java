@@ -6,7 +6,7 @@
 package edu.franklin.comp655.group5.gradebook.model;
 
 /**
- * Data object that represent a Student in the gradeBook.
+ * Data object that represents a Student in the DGB (Distributed GradeBooks).
  * @author Alcir David
  */
 public class Student {
@@ -15,18 +15,18 @@ public class Student {
     private String grade;
 
    public String getName() { 
-       return name; 
+       return name;
    }
    
    public void setName(String name) {
-       this.name = name; 
+       this.name = name;
    }
 
    public String getGrade() { 
-       return grade; 
+       return grade;
    }
    
    public void setGrade(String grade) {
-       this.grade = grade; 
+       this.grade = grade;
    }
 }

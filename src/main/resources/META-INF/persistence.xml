@@ -3,5 +3,6 @@
   <!-- Define Persistence Unit -->
   <persistence-unit name="my_persistence_unit">
     <class>edu.franklin.comp655.group5.gradebook.model.Student</class>
+    <class>edu.franklin.comp655.group5.gradebook.model.GradeBook</class>
   </persistence-unit>
 </persistence>

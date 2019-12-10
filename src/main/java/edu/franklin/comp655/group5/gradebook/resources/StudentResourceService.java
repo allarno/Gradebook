@@ -58,7 +58,7 @@ public class StudentResourceService implements StudentResource {
 //    }
    
    @Override
-   public Response createStudent(String name, String grade) {
+   public Response createStudent(Long gradebookId, String name, String grade) {
        
         if (!isValideGrade(grade)) {
             throw new WebApplicationException(grade + " is not a valid grade.",
@@ -84,7 +84,7 @@ public class StudentResourceService implements StudentResource {
     }
 
     @Override
-    public StreamingOutput getStudent(String name) { 
+    public StreamingOutput getStudent(Long gradebookId, String name) { 
         final Student student = studentDB.get(name);
                 
         if (student == null) {
@@ -96,7 +96,7 @@ public class StudentResourceService implements StudentResource {
     }
     
     @Override
-    public StreamingOutput getAllStudents() {
+    public StreamingOutput getAllStudents(Long gradebookId) {
         
         return (OutputStream outputStream) -> {
             StudentList studentList = new StudentList();
@@ -110,12 +110,12 @@ public class StudentResourceService implements StudentResource {
     }
 
     @Override
-    public Response updateStudent(String name, String grade) {
-        return createStudent(name, grade);
+    public Response updateStudent(Long gradebookId, String name, String grade) {
+        return createStudent(gradebookId, name, grade);
     }
     
     @Override
-    public Response deleteStudent(String name) {
+    public Response deleteStudent(Long gradebookId, String name) {
         if (studentDB.remove(name) == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }

@@ -8,7 +8,8 @@ package edu.franklin.comp655.group5.gradebook.model;
 import java.util.ArrayList;
 
 /**
- * Data object that represent a list of students in the gradeBook.
+ * Data object that represents a list of students 
+ * in the DGB (Distributed GradeBooks).
  * @author Alcir David
  */
 public class StudentList {

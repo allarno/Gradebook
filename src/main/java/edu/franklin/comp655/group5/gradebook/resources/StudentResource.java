@@ -21,32 +21,42 @@ import javax.ws.rs.core.StreamingOutput;
  *
  * @author Alcir David
  */
-@Path("/student")
+@Path("/gradebook/{id}/student")
 public interface StudentResource {
-   
-   @POST
-   @Path("{name}/grade/{grade}")
-   @Consumes("application/x-www-form-urlencoded")
-   public Response createStudent(@PathParam("name") String name, 
-           @PathParam("grade") String letter);
-   
-   @GET
-   @Path("{name}")
-   @Produces("text/xml;charset=utf-8")
-   public StreamingOutput getStudent(@PathParam("name") String name);
 
-   @PUT
-   @Path("{name}/grade/{grade}")
-   @Consumes("application/x-www-form-urlencoded")
-   public Response updateStudent(@PathParam("name") String name, 
-           @PathParam("grade") String letter);
-   
-   @GET
-   @Produces("text/xml;charset=utf-8")
-   public StreamingOutput getAllStudents( );
-   
-   @DELETE
-   @Path("{name}")
-   @Consumes("application/x-www-form-urlencoded")
-   public Response deleteStudent(@PathParam("name") String name);
+    @PUT
+    @Path("{name}/grade/{grade}")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response createStudent(
+            @PathParam(value = "id") Long gradebookId, 
+            @PathParam("name") String name,
+            @PathParam("grade") String grade);
+
+    @GET
+    @Path("{name}")
+    @Produces("text/xml;charset=utf-8")
+    public StreamingOutput getStudent(
+            @PathParam(value = "id") Long gradebookId,
+            @PathParam(value = "name")
+    String name);
+
+    @POST
+    @Path("{name}/grade/{grade}")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response updateStudent(
+            @PathParam(value = "id") Long gradebookId, 
+            @PathParam("name") String name,
+            @PathParam("grade") String grade);
+
+    @GET
+    @Produces("text/xml;charset=utf-8")
+    public StreamingOutput getAllStudents(
+            @PathParam(value = "id") Long gradebookId);
+
+    @DELETE
+    @Path("{name}")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response deleteStudent(
+            @PathParam(value = "id") Long gradebookId, 
+            @PathParam("name") String name);
 }
