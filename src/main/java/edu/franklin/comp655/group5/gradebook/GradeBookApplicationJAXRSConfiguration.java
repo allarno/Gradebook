@@ -1,5 +1,6 @@
 package edu.franklin.comp655.group5.gradebook;
 
+import edu.franklin.comp655.group5.gradebook.resources.GradeBookResourceService;
 import edu.franklin.comp655.group5.gradebook.resources.StudentResourceService;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +19,7 @@ public class GradeBookApplicationJAXRSConfiguration extends Application {
 
    public GradeBookApplicationJAXRSConfiguration() {
       singletons.add(new StudentResourceService());
+      singletons.add(new GradeBookResourceService());
    }
 
    @Override

@@ -28,6 +28,16 @@ import javax.ws.rs.core.StreamingOutput;
  */
 public class StudentResourceService implements StudentResource {
 
+    private StudentList studentList;
+    
+    public StudentResourceService() {
+        this.studentList = null;
+    }
+    
+    public StudentResourceService(StudentList studentList) {
+        this.studentList = studentList;
+    }
+
    private Map<String, Student> studentDB = new ConcurrentHashMap<>();
    
    // Method to encode a string value using `UTF-8` encoding scheme
@@ -38,24 +48,6 @@ public class StudentResourceService implements StudentResource {
             throw new RuntimeException(ex.getCause());
         }
     }
-    
-    // Method to decode a string value using `UTF-8` decoding scheme
-//    private String decodeValue(String value) {
-//        try {
-//            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-//        } catch (UnsupportedEncodingException ex) {
-//            throw new RuntimeException(ex.getCause());
-//        }
-//    }
-    
-    // Method to decode a string value
-//    public String getPathMethod(String url) {
-//       try {
-//           return new URI(url).getPath();
-//       } catch (URISyntaxException ex) {
-//            throw new RuntimeException(ex.getCause());
-//       }
-//    }
    
    @Override
    public Response createStudent(Long gradebookId, String name, String grade) {
@@ -99,12 +91,12 @@ public class StudentResourceService implements StudentResource {
     public StreamingOutput getAllStudents(Long gradebookId) {
         
         return (OutputStream outputStream) -> {
-            StudentList studentList = new StudentList();
-            
-            for (String id : studentDB.keySet()) {
-                final Student student = studentDB.get(id);
-                studentList.add(student);
-            }  
+//            StudentList studentList = new StudentList();
+//            
+//            for (String id : studentDB.keySet()) {
+//                final Student student = studentDB.get(id);
+//                studentList.add(student);
+//            }  
             outputStudent(outputStream, studentList);
         };  
     }
@@ -150,7 +142,7 @@ public class StudentResourceService implements StudentResource {
       PrintStream writer = new PrintStream(os);
       writer.println("<student-list>");
   
-      for (Student student : studentList.getAllStudents()) {
+      for (Student student : studentList.getStudentList()) {
           writer.print("   ");
           outputStudent(os, student);
       }

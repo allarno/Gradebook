@@ -29,4 +29,19 @@ public class Student {
    public void setGrade(String grade) {
        this.grade = grade;
    }
+   
+   @Override
+    public String toString() {
+        StringBuilder writer = new StringBuilder();
+        writer.append("<student>\n");
+        writer.append("   <name>");
+        writer.append(name);
+        writer.append("</name>\n");
+        writer.append("   <grade>");
+        writer.append(grade);
+        writer.append("</grade>\n");
+        writer.append("</student>");
+        
+        return writer.toString();
+    }
 }

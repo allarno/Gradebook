@@ -27,12 +27,12 @@ public interface GradeBookResource {
     @PUT
     @Path("gradebook/{name}")
     @Consumes("application/x-www-form-urlencoded")
-    public Response createGradeBook(@PathParam("name") String name);
+    public Long createGradeBook(@PathParam("name") String name);
     
     @POST
     @Path("gradebook/{name}")
     @Consumes("application/x-www-form-urlencoded")
-    public Response updateGradeBook(@PathParam("name") String name);
+    public Long updateGradeBook(@PathParam("name") String name);
 
     @GET
     @Path("gradebook")
@@ -62,4 +62,41 @@ public interface GradeBookResource {
     @Consumes("application/x-www-form-urlencoded")
     public Response deleteSecondaryGradeBook(
             @PathParam(value = "id") Long gradebookId);
+    
+    @PUT
+    @Path("gradebook/{id}/student/{name}/grade/{grade}")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response createStudent(
+            @PathParam(value = "id") Long gradebookId, 
+            @PathParam("name") String name,
+            @PathParam("grade") String grade);
+
+    @GET
+    @Path("gradebook/{id}/student/{name}")
+    @Produces("text/xml;charset=utf-8")
+    public StreamingOutput getStudent(
+            @PathParam(value = "id") Long gradebookId,
+            @PathParam(value = "name")
+    String name);
+
+    @POST
+    @Path("gradebook/{id}/student/{name}/grade/{grade}")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response updateStudent(
+            @PathParam(value = "id") Long gradebookId,
+            @PathParam("name") String name,
+            @PathParam("grade") String grade);
+
+    @GET
+    @Path("gradebook/{id}/student")
+    @Produces("text/xml;charset=utf-8")
+    public StreamingOutput getAllStudents(
+            @PathParam(value = "id") Long gradebookId);
+
+    @DELETE
+    @Path("gradebook/{id}/student/{name}")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response deleteStudent(
+            @PathParam(value = "id") Long gradebookId,
+            @PathParam("name") String name);
 }
