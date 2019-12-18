@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Data object that represents a GradeBook in the DGB (Distributed GradeBooks).
@@ -18,6 +20,7 @@ import javax.validation.constraints.NotNull;
  * @author Alcir David
  */
 @Entity
+@XmlRootElement (name = "gradebook")
 public class GradeBook implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,7 +29,7 @@ public class GradeBook implements Serializable {
     private Long id;
     private String name;
     private StudentList students = new StudentList();
-    private boolean isSecondary;
+//    private boolean isSecondary;
 
     public String getName() {
         return name;
@@ -36,6 +39,7 @@ public class GradeBook implements Serializable {
         this.name = name;
     }
 
+    @XmlElement (name = "id", required = true)
     public Long getId() {
         return id;
     }
@@ -44,15 +48,17 @@ public class GradeBook implements Serializable {
         this.id = id;
     }
 
-    public boolean isIsSecondary() {
-        return isSecondary;
-    }
+//    public boolean isIsSecondary() {
+//        return isSecondary;
+//    }
+//
+//    public void setIsSecondary(boolean isSecondary) {
+//        this.isSecondary = isSecondary;
+//    }
 
-    public void setIsSecondary(boolean isSecondary) {
-        this.isSecondary = isSecondary;
-    }
-
-    public StudentList getStudentList() {
+//    @XmlElement (name = "student-list", required = false, 
+//            type = StudentList.class)
+    public StudentList fetchStudentList() {
         return students;
     }
 
@@ -66,6 +72,10 @@ public class GradeBook implements Serializable {
     
     public void add(@NotNull Student student){
         students.add(student);
+    }
+    
+    public Student removeStudentByName(String name) {
+        return students.remove(name);
     }
 
     @Override

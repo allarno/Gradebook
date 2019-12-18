@@ -11,14 +11,14 @@ import javax.ws.rs.core.Application;
  * Configures JAX-RS for the application.
  * @author Alcir David
  */
-//@ApplicationPath("resources")
+@ApplicationPath("/services")
 public class GradeBookApplicationJAXRSConfiguration extends Application {
     
    private Set<Object> singletons = new HashSet<Object>();
    private Set<Class<?>> empty = new HashSet<Class<?>>();
 
    public GradeBookApplicationJAXRSConfiguration() {
-      singletons.add(new StudentResourceService());
+//      singletons.add(new StudentResourceService());
       singletons.add(new GradeBookResourceService());
    }
 

@@ -27,12 +27,12 @@ public interface GradeBookResource {
     @PUT
     @Path("gradebook/{name}")
     @Consumes("application/x-www-form-urlencoded")
-    public Long createGradeBook(@PathParam("name") String name);
+    public Response createGradeBook(@PathParam("name") String name);
     
     @POST
     @Path("gradebook/{name}")
     @Consumes("application/x-www-form-urlencoded")
-    public Long updateGradeBook(@PathParam("name") String name);
+    public Response updateGradeBook(@PathParam("name") String name);
 
     @GET
     @Path("gradebook")
@@ -43,31 +43,31 @@ public interface GradeBookResource {
     @Path("gradebook/{id}")
     @Consumes("application/x-www-form-urlencoded")
     public Response deleteGradeBook(
-            @PathParam(value = "id") Long gradebookId);
+            @PathParam(value = "id") Long gradeBookId);
 
     @PUT
     @Path("secondary/{id}")
     @Consumes("application/x-www-form-urlencoded")
     public Response createSecondaryGradeBook(
-            @PathParam(value = "id") Long gradebookId);
+            @PathParam(value = "id") Long gradeBookId);
     
     @POST
     @Path("secondary/{id}")
     @Consumes("application/x-www-form-urlencoded")
     public Response updateSecondaryGradeBook(
-            @PathParam(value = "id") Long gradebookId);
+            @PathParam(value = "id") Long gradeBookId);
 
     @DELETE
     @Path("secondary/{id}")
     @Consumes("application/x-www-form-urlencoded")
     public Response deleteSecondaryGradeBook(
-            @PathParam(value = "id") Long gradebookId);
+            @PathParam(value = "id") Long gradeBookId);
     
     @PUT
     @Path("gradebook/{id}/student/{name}/grade/{grade}")
     @Consumes("application/x-www-form-urlencoded")
     public Response createStudent(
-            @PathParam(value = "id") Long gradebookId, 
+            @PathParam(value = "id") Long gradeBookId, 
             @PathParam("name") String name,
             @PathParam("grade") String grade);
 
@@ -75,7 +75,7 @@ public interface GradeBookResource {
     @Path("gradebook/{id}/student/{name}")
     @Produces("text/xml;charset=utf-8")
     public StreamingOutput getStudent(
-            @PathParam(value = "id") Long gradebookId,
+            @PathParam(value = "id") Long gradeBookId,
             @PathParam(value = "name")
     String name);
 
@@ -83,7 +83,7 @@ public interface GradeBookResource {
     @Path("gradebook/{id}/student/{name}/grade/{grade}")
     @Consumes("application/x-www-form-urlencoded")
     public Response updateStudent(
-            @PathParam(value = "id") Long gradebookId,
+            @PathParam(value = "id") Long gradeBookId,
             @PathParam("name") String name,
             @PathParam("grade") String grade);
 
@@ -91,12 +91,12 @@ public interface GradeBookResource {
     @Path("gradebook/{id}/student")
     @Produces("text/xml;charset=utf-8")
     public StreamingOutput getAllStudents(
-            @PathParam(value = "id") Long gradebookId);
+            @PathParam(value = "id") Long gradeBookId);
 
     @DELETE
     @Path("gradebook/{id}/student/{name}")
     @Consumes("application/x-www-form-urlencoded")
     public Response deleteStudent(
-            @PathParam(value = "id") Long gradebookId,
+            @PathParam(value = "id") Long gradeBookId,
             @PathParam("name") String name);
 }

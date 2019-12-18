@@ -5,15 +5,20 @@
  */
 package edu.franklin.comp655.group5.gradebook.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Data object that represents a Student in the DGB (Distributed GradeBooks).
  * @author Alcir David
  */
+@XmlRootElement(name = "student")
 public class Student {
 
     private String name;
     private String grade;
 
+   @XmlElement
    public String getName() { 
        return name;
    }
@@ -26,6 +31,7 @@ public class Student {
        return grade;
    }
    
+   @XmlElement
    public void setGrade(String grade) {
        this.grade = grade;
    }

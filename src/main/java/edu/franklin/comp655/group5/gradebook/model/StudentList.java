@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -10,31 +10,25 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Data object that represents a list of students 
  * in the DGB (Distributed GradeBooks).
  * @author Alcir David
  */
+@XmlRootElement(name = "student-list")
 public class StudentList {
     private Map<String, Student> studentDB = new ConcurrentHashMap<>();
-
-//    ArrayList<Student> studentList = new ArrayList();
-//    
-//    public ArrayList<Student> getAllStudents() {
-//        return studentList;
-//    }
-//    
-//    public void setStudentList(ArrayList<Student> studentList) {
-//        this.studentList = studentList;
-//    }
-//    
-//    public void add(Student student) {
-//        studentList.add(student);
-//    }
-//    
+    
+    public void setStudentList(ArrayList<Student> studentList) {
+        studentList.forEach(
+                student -> studentDB.put(student.getName(), student));
+    }
+    
+    @XmlElement(name = "student", type = Student.class)
     public ArrayList<Student> getStudentList() {
-//        return new ArrayList(Arrays.asList(studentDB.values()));
         return new ArrayList(studentDB.values());
     }
     
@@ -57,6 +51,10 @@ public class StudentList {
         studentDB.put(studentName, current);
     }
     
+    public Student remove(String name) {
+        return studentDB.remove(name);
+    }
+    
     @Override
     public String toString() {
         StringBuilder writer = new StringBuilder();
@@ -71,6 +69,5 @@ public class StudentList {
         writer.append("</student-list>");
 
         return writer.toString();
-//        return "GradeBookList{" + "gradeBookDB=" + gradeBookDB + '}';
     }
 }
