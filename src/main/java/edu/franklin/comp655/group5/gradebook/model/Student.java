@@ -10,7 +10,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Data object that represents a Student in the DGB (Distributed GradeBooks).
+ * 
  * @author Alcir David
+ * @author Allan Akhonya
+ * @author Anirudha Samudrala
  */
 @XmlRootElement(name = "student")
 public class Student {

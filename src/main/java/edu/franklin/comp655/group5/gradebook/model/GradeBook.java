@@ -18,6 +18,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Data object that represents a GradeBook in the DGB (Distributed GradeBooks).
  *
  * @author Alcir David
+ * @author Allan Akhonya
+ * @author Anirudha Samudrala
  */
 @XmlRootElement(name = "gradebook")
 public class GradeBook implements Serializable {

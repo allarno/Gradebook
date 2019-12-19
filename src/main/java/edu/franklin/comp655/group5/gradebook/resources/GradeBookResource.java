@@ -19,6 +19,8 @@ import javax.ws.rs.core.StreamingOutput;
 /**
  *
  * @author Alcir David
+ * @author Allan Akhonya
+ * @author Anirudha Samudrala
  */
 @Path("/")
 public interface GradeBookResource {

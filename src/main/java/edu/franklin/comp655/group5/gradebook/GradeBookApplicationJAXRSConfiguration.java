@@ -8,7 +8,10 @@ import javax.ws.rs.core.Application;
 
 /**
  * Configures JAX-RS for the application.
+ * 
  * @author Alcir David
+ * @author Allan Akhonya
+ * @author Anirudha Samudrala
  */
 @ApplicationPath("/services")
 public class GradeBookApplicationJAXRSConfiguration extends Application {

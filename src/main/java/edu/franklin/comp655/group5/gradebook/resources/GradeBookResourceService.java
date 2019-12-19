@@ -9,16 +9,9 @@ import edu.franklin.comp655.group5.gradebook.model.GradeBook;
 import edu.franklin.comp655.group5.gradebook.model.GradeBookList;
 import edu.franklin.comp655.group5.gradebook.model.Student;
 import edu.franklin.comp655.group5.gradebook.model.StudentList;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ws.rs.WebApplicationException;
@@ -29,6 +22,8 @@ import javax.ws.rs.core.StreamingOutput;
 /**
  *
  * @author Alcir David
+ * @author Allan Akhonya
+ * @author Anirudha Samudrala
  */
 public class GradeBookResourceService implements GradeBookResource {
 

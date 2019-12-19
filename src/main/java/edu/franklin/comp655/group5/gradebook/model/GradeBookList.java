@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
  * GradeBooks).
  *
  * @author Alcir David
+ * @author Allan Akhonya
+ * @author Anirudha Samudrala
  */
 public class GradeBookList {
 
