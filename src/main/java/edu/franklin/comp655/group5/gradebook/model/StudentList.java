@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "student-list")
 public class StudentList {
-    private Map<String, Student> studentDB = new ConcurrentHashMap<>();
+    final private Map<String, Student> studentDB = new ConcurrentHashMap<>();
     
     public void setStudentList(ArrayList<Student> studentList) {
         studentList.forEach(

@@ -19,17 +19,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Alcir David
  */
-@Entity
-@XmlRootElement (name = "gradebook")
+@XmlRootElement(name = "gradebook")
 public class GradeBook implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private StudentList students = new StudentList();
-//    private boolean isSecondary;
 
     public String getName() {
         return name;
@@ -39,7 +35,7 @@ public class GradeBook implements Serializable {
         this.name = name;
     }
 
-    @XmlElement (name = "id", required = true)
+    @XmlElement(name = "id", required = true)
     public Long getId() {
         return id;
     }
@@ -47,14 +43,6 @@ public class GradeBook implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-//    public boolean isIsSecondary() {
-//        return isSecondary;
-//    }
-//
-//    public void setIsSecondary(boolean isSecondary) {
-//        this.isSecondary = isSecondary;
-//    }
 
 //    @XmlElement (name = "student-list", required = false, 
 //            type = StudentList.class)
@@ -65,15 +53,15 @@ public class GradeBook implements Serializable {
     public void setStudentList(StudentList studentList) {
         this.students = studentList;
     }
-    
+
     public Student getStudent(String name) {
         return students.getStudentByName(name);
     }
-    
-    public void add(@NotNull Student student){
+
+    public void add(@NotNull Student student) {
         students.add(student);
     }
-    
+
     public Student removeStudentByName(String name) {
         return students.remove(name);
     }
@@ -109,7 +97,7 @@ public class GradeBook implements Serializable {
         writer.append(name);
         writer.append("</name>\n");
         writer.append("</gradebook>");
-        
+
         return writer.toString();
     }
 

@@ -5,7 +5,6 @@
  */
 package edu.franklin.comp655.group5.gradebook.resources;
 
-import java.io.InputStream;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -76,8 +75,7 @@ public interface GradeBookResource {
     @Produces("text/xml;charset=utf-8")
     public StreamingOutput getStudent(
             @PathParam(value = "id") Long gradeBookId,
-            @PathParam(value = "name")
-    String name);
+            @PathParam(value = "name") String name);
 
     @POST
     @Path("gradebook/{id}/student/{name}/grade/{grade}")

@@ -40,16 +40,16 @@ public class GradeBookResourceService implements GradeBookResource {
         secondaryGradeBookList = new GradeBookList();
     }
 
-    private final String VALID_GRADE_REGEX = 
-            "([A-D]|[a-d])[+-]?|E|F|I|W|Z|e|f|i|w|z";
+    private final String VALID_GRADE_REGEX
+            = "([A-D]|[a-d])[+-]?|E|F|I|W|Z|e|f|i|w|z";
 
-    private boolean isValideGrade(String grade) {
+    private boolean isValidGrade(String grade) {
         Pattern pattern = Pattern.compile(VALID_GRADE_REGEX);
         Matcher matcher = pattern.matcher(grade);
         return matcher.matches();
     }
 
-    private boolean isValideGradeBookName(String name) {
+    private boolean isValidGradeBookName(String name) {
         // GradeBoook title which must be a character string 
         //that begins with a non-whitespace character.
         return !name.isEmpty() && !Character.isWhitespace(name.charAt(0));
@@ -58,8 +58,8 @@ public class GradeBookResourceService implements GradeBookResource {
     private GradeBook validateGradeBookId(Long gradeBookId) {
         return validateGradeBookId(gradeBookId, gradeBookList);
     }
-    
-    private GradeBook validateGradeBookId(Long gradeBookId, 
+
+    private GradeBook validateGradeBookId(Long gradeBookId,
             GradeBookList gradeBookList) {
         GradeBook gradeBook = gradeBookList.getGradeBookById(gradeBookId);
 
@@ -67,18 +67,15 @@ public class GradeBookResourceService implements GradeBookResource {
             throw new WebApplicationException("There is no GradeBook "
                     + "with the given id: " + gradeBookId,
                     Response.Status.NOT_FOUND);
-            
-//            return Response.status(Response.Status.NOT_FOUND)
-//                    .entity("There is no GradeBook "
-//                    + "with the given id: " + gradeBookId).build();
         }
+
         return gradeBook;
     }
 
     @Override
     public Response createGradeBook(String name) {
 
-        if (!isValideGradeBookName(name)) {
+        if (!isValidGradeBookName(name)) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(name + " is not a valid gradeBook tilte.").build();
         }
@@ -93,7 +90,7 @@ public class GradeBookResourceService implements GradeBookResource {
         GradeBook gradeBook = new GradeBook();
         gradeBook.setName(name);
         gradeBook.setId(id);
-        
+
         gradeBookList.add(gradeBook);
         System.out.println("Created gradeBook Id: " + gradeBook.getId());
         return Response.status(Response.Status.OK).entity(gradeBook).build();
@@ -114,33 +111,39 @@ public class GradeBookResourceService implements GradeBookResource {
 
     @Override
     public Response deleteGradeBook(Long gradeBookId) {
-        
-        if (gradeBookList.removeGradeBookById(gradeBookId) == null) {            
+
+        if (gradeBookList.removeGradeBookById(gradeBookId) == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("There is no GradeBook with the given id: "
                             + gradeBookId).build();
         }
-        
+
         if (secondaryGradeBookList.containsId(gradeBookId)) {
             // remove gradebook secondary copy
             secondaryGradeBookList.removeGradeBookById(gradeBookId);
         }
-        
+
         return Response.status(Response.Status.OK).build();
     }
 
     @Override
     public Response createSecondaryGradeBook(Long gradeBookId) {
-        GradeBook gradeBook = validateGradeBookId(gradeBookId);
+        GradeBook gradeBook = gradeBookList.getGradeBookById(gradeBookId);
+
+        if (gradeBook == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("There is no GradeBook "
+                            + "with the given id: " + gradeBookId).build();
+        }
 
         if (secondaryGradeBookList.containsId(gradeBookId)) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("The server already has a secondary copy "
                             + "of the GradeBook").build();
-        }   
+        }
         // create a secondary copy
         secondaryGradeBookList.add(gradeBook);
-        
+
         return Response.status(Status.OK).build();
     }
 
@@ -151,23 +154,33 @@ public class GradeBookResourceService implements GradeBookResource {
 
     @Override
     public Response deleteSecondaryGradeBook(Long gradeBookId) {
-        validateGradeBookId(gradeBookId);
-        
+        //validateGradeBookId(gradeBookId);
+        if (!gradeBookList.containsId(gradeBookId)) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("There is no GradeBook "
+                            + "with the given id: " + gradeBookId).build();
+        }
+
         if (secondaryGradeBookList.removeGradeBookById(gradeBookId) == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("The server does not have a "
-                    + "secondary copy of the GradeBook").build();
+                            + "secondary copy of the GradeBook").build();
         }
-        
+
         return Response.status(Response.Status.OK).build();
     }
 
     @Override
     public Response createStudent(Long gradeBookId, String name, String grade) {
+        GradeBook gradeBook = gradeBookList.getGradeBookById(gradeBookId);
 
-        GradeBook gradeBook = validateGradeBookId(gradeBookId);
+        if (gradeBook == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("There is no GradeBook "
+                            + "with the given id: " + gradeBookId).build();
+        }
 
-        if (!isValideGrade(grade)) {
+        if (!isValidGrade(grade)) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(grade + " is not a valid grade.").build();
         }
@@ -181,7 +194,7 @@ public class GradeBookResourceService implements GradeBookResource {
                 + " grade: " + current.getGrade());
 
         gradeBookList.add(gradeBook);
-        
+
         if (secondaryGradeBookList.containsId(gradeBookId)) {
             // update the secondary copy
             secondaryGradeBookList.add(gradeBook);
@@ -194,8 +207,14 @@ public class GradeBookResourceService implements GradeBookResource {
     public StreamingOutput getStudent(Long gradeBookId, String name) {
         return (OutputStream outputStream) -> {
             GradeBook gradeBook = validateGradeBookId(gradeBookId);
-
             Student student = gradeBook.getStudent(name);
+
+            if (student == null) {
+                throw new WebApplicationException("There is no student "
+                        + "in the given GradeBook with the given student name: "
+                        + name, Response.Status.NOT_FOUND);
+            }
+
             PrintStream writer = new PrintStream(outputStream);
             writer.print(student.toString());
         };
@@ -203,10 +222,15 @@ public class GradeBookResourceService implements GradeBookResource {
 
     @Override
     public Response updateStudent(Long gradeBookId, String name, String grade) {
+        GradeBook gradeBook = gradeBookList.getGradeBookById(gradeBookId);
 
-        GradeBook gradeBook = validateGradeBookId(gradeBookId);
+        if (gradeBook == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("There is no GradeBook "
+                            + "with the given id: " + gradeBookId).build();
+        }
 
-        if (!isValideGrade(grade)) {
+        if (!isValidGrade(grade)) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(grade + " is not a valid grade.").build();
         }
@@ -223,11 +247,11 @@ public class GradeBookResourceService implements GradeBookResource {
         current.setGrade(grade);
 
         gradeBook.add(current);
-        System.out.println("Updated student: " + current.getName() 
+        System.out.println("Updated student: " + current.getName()
                 + " grade: " + current.getGrade());
 
         gradeBookList.add(gradeBook); //update 
-        
+
         if (secondaryGradeBookList.containsId(gradeBookId)) {
             // update the secondary copy
             secondaryGradeBookList.add(gradeBook);
@@ -240,7 +264,7 @@ public class GradeBookResourceService implements GradeBookResource {
     public StreamingOutput getAllStudents(Long gradeBookId) {
         return (OutputStream outputStream) -> {
             GradeBook gradeBook = validateGradeBookId(gradeBookId);
-            
+
             StudentList studentList = gradeBook.fetchStudentList();
             PrintStream writer = new PrintStream(outputStream);
             writer.print(studentList.toString());
@@ -249,15 +273,20 @@ public class GradeBookResourceService implements GradeBookResource {
 
     @Override
     public Response deleteStudent(Long gradeBookId, String name) {
-        
-        GradeBook gradeBook = validateGradeBookId(gradeBookId);
-        
+        GradeBook gradeBook = gradeBookList.getGradeBookById(gradeBookId);
+
+        if (gradeBook == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("There is no GradeBook "
+                            + "with the given id: " + gradeBookId).build();
+        }
+
         if (gradeBook.removeStudentByName(name) == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("There is no student in the given GradeBook "
                             + "with the given student name: " + name).build();
         }
-        
+
         gradeBookList.add(gradeBook); // update gradeBook
 
         if (secondaryGradeBookList.containsId(gradeBookId)) {
@@ -266,7 +295,7 @@ public class GradeBookResourceService implements GradeBookResource {
             // update the secondary copy
             secondaryGradeBookList.add(gradeBook);
         }
-        
+
         return Response.status(Response.Status.OK).build();
     }
 }

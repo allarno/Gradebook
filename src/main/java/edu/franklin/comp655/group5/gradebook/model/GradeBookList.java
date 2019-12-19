@@ -20,29 +20,18 @@ import javax.validation.constraints.NotNull;
  */
 public class GradeBookList {
 
-    private Map<Long, GradeBook> gradeBookDB = new ConcurrentHashMap<>();
-    private Set<String> gradeBookNames = new HashSet();
+    final private Map<Long, GradeBook> gradeBookDB = new ConcurrentHashMap<>();
+    final private Set<String> gradeBookNames = new HashSet();
 
-//    ArrayList<GradeBook> GradeBookList = new ArrayList();
-//    
-//    public ArrayList<GradeBook> getGradeBooks() {
-//        return GradeBookList;
-//    }
-//    
-//    public void setGradeBooks(ArrayList<GradeBook> gradeBook) {
-//        this.GradeBookList = gradeBook;
-//    }
     public ArrayList<GradeBook> getGradeBookList() {
         return new ArrayList(gradeBookDB.values());
     }
 
     public void setGradeBookList(ArrayList<GradeBook> gradeBooks) {
-//        this.GradeBookList = gradeBook;
         gradeBooks.forEach(gradeBook -> add(gradeBook));
     }
 
     public void add(@NotNull GradeBook gradeBook) {
-//        GradeBookList.add(gradeBook);
         add(gradeBook.getId(), gradeBook);
     }
 
@@ -86,6 +75,5 @@ public class GradeBookList {
         writer.append("</gradebook-list>");
 
         return writer.toString();
-//        return "GradeBookList{" + "gradeBookDB=" + gradeBookDB + '}';
     }
 }
