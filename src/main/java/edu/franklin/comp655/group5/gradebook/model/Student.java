@@ -27,11 +27,11 @@ public class Student {
        this.name = name;
    }
 
+   @XmlElement
    public String getGrade() { 
        return grade;
    }
    
-   @XmlElement
    public void setGrade(String grade) {
        this.grade = grade;
    }
