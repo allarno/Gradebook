@@ -14,7 +14,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
 
 /**
  *
@@ -29,7 +28,7 @@ public interface GradeBookResource {
     @Path("gradebook/{name}")
     @Consumes("application/x-www-form-urlencoded")
     public Response createGradeBook(@PathParam("name") String name);
-    
+
     @POST
     @Path("gradebook/{name}")
     @Consumes("application/x-www-form-urlencoded")
@@ -38,8 +37,8 @@ public interface GradeBookResource {
     @GET
     @Path("gradebook")
     @Produces("text/xml;charset=utf-8")
-    public StreamingOutput getAllGradeBooks();
-    
+    public Response getAllGradeBooks();
+
     @DELETE
     @Path("gradebook/{id}")
     @Consumes("application/x-www-form-urlencoded")
@@ -51,7 +50,7 @@ public interface GradeBookResource {
     @Consumes("application/x-www-form-urlencoded")
     public Response createSecondaryGradeBook(
             @PathParam(value = "id") Long gradeBookId);
-    
+
     @POST
     @Path("secondary/{id}")
     @Consumes("application/x-www-form-urlencoded")
@@ -63,19 +62,19 @@ public interface GradeBookResource {
     @Consumes("application/x-www-form-urlencoded")
     public Response deleteSecondaryGradeBook(
             @PathParam(value = "id") Long gradeBookId);
-    
+
     @PUT
     @Path("gradebook/{id}/student/{name}/grade/{grade}")
     @Consumes("application/x-www-form-urlencoded")
     public Response createStudent(
-            @PathParam(value = "id") Long gradeBookId, 
+            @PathParam(value = "id") Long gradeBookId,
             @PathParam("name") String name,
             @PathParam("grade") String grade);
 
     @GET
     @Path("gradebook/{id}/student/{name}")
     @Produces("text/xml;charset=utf-8")
-    public StreamingOutput getStudent(
+    public Response getStudent(
             @PathParam(value = "id") Long gradeBookId,
             @PathParam(value = "name") String name);
 
@@ -90,7 +89,7 @@ public interface GradeBookResource {
     @GET
     @Path("gradebook/{id}/student")
     @Produces("text/xml;charset=utf-8")
-    public StreamingOutput getAllStudents(
+    public Response getAllStudents(
             @PathParam(value = "id") Long gradeBookId);
 
     @DELETE

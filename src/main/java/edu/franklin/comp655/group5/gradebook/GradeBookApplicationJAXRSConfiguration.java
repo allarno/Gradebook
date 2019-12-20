@@ -8,29 +8,29 @@ import javax.ws.rs.core.Application;
 
 /**
  * Configures JAX-RS for the application.
- * 
+ *
  * @author Alcir David
  * @author Allan Akhonya
  * @author Anirudha Samudrala
  */
 @ApplicationPath("/services")
 public class GradeBookApplicationJAXRSConfiguration extends Application {
-    
-   private Set<Object> singletons = new HashSet<Object>();
-   private Set<Class<?>> empty = new HashSet<Class<?>>();
 
-   public GradeBookApplicationJAXRSConfiguration() {
-      singletons.add(new GradeBookResourceService());
-   }
+    private Set<Object> singletons = new HashSet<Object>();
+    private Set<Class<?>> empty = new HashSet<Class<?>>();
 
-   @Override
-   public Set<Class<?>> getClasses() {
-      return empty;
-   }
+    public GradeBookApplicationJAXRSConfiguration() {
+        singletons.add(new GradeBookResourceService());
+    }
 
-   @Override
-   public Set<Object> getSingletons() {
-      return singletons;
-   }
+    @Override
+    public Set<Class<?>> getClasses() {
+        return empty;
+    }
+
+    @Override
+    public Set<Object> getSingletons() {
+        return singletons;
+    }
 
 }

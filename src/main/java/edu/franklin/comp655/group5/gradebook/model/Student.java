@@ -7,6 +7,7 @@ package edu.franklin.comp655.group5.gradebook.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Data object that represents a Student in the DGB (Distributed GradeBooks).
@@ -16,12 +17,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Anirudha Samudrala
  */
 @XmlRootElement(name = "student")
+@XmlType(propOrder={"name", "grade"})
 public class Student {
-
+    
     private String name;
     private String grade;
 
-   @XmlElement
+   @XmlElement(required = true)
    public String getName() { 
        return name;
    }
@@ -30,7 +32,7 @@ public class Student {
        this.name = name;
    }
 
-   @XmlElement
+   @XmlElement(required = true)
    public String getGrade() { 
        return grade;
    }
