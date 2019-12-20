@@ -6,10 +6,8 @@
 package edu.franklin.comp655.group5.gradebook.model;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,6 +27,7 @@ public class GradeBook implements Serializable {
     private String name;
     private StudentList students = new StudentList();
 
+    @XmlElement(required = true)
     public String getName() {
         return name;
     }
@@ -37,7 +36,7 @@ public class GradeBook implements Serializable {
         this.name = name;
     }
 
-    @XmlElement(name = "id", required = true)
+    @XmlElement(required = true)
     public Long getId() {
         return id;
     }
@@ -46,8 +45,6 @@ public class GradeBook implements Serializable {
         this.id = id;
     }
 
-//    @XmlElement (name = "student-list", required = false, 
-//            type = StudentList.class)
     public StudentList fetchStudentList() {
         return students;
     }

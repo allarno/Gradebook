@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Data object that represents a list of GradeBooks in the DGB (Distributed
@@ -20,11 +22,13 @@ import javax.validation.constraints.NotNull;
  * @author Allan Akhonya
  * @author Anirudha Samudrala
  */
+@XmlRootElement(name = "gradebook-list")
 public class GradeBookList {
 
     final private Map<Long, GradeBook> gradeBookDB = new ConcurrentHashMap<>();
     final private Set<String> gradeBookNames = new HashSet();
 
+    @XmlElement(name = "gradebook")
     public ArrayList<GradeBook> getGradeBookList() {
         return new ArrayList(gradeBookDB.values());
     }
@@ -45,21 +49,21 @@ public class GradeBookList {
     public GradeBook getGradeBookById(Long gradeBookId) {
         return gradeBookDB.get(gradeBookId);
     }
-    
+
     public GradeBook removeGradeBookById(Long gradeBookId) {
         GradeBook gradeBook = gradeBookDB.remove(gradeBookId);
         if (gradeBook != null) {
             gradeBookNames.remove(gradeBook.getName());
         }
-                    
+
         return gradeBook;
     }
-    
-    public boolean containsTitle(String title){
+
+    public boolean containsTitle(String title) {
         return gradeBookNames.contains(title);
     }
-    
-    public boolean containsId(Long gradeBookId){
+
+    public boolean containsId(Long gradeBookId) {
         return gradeBookDB.containsKey(gradeBookId);
     }
 

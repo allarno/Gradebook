@@ -9,15 +9,11 @@ import edu.franklin.comp655.group5.gradebook.model.GradeBook;
 import edu.franklin.comp655.group5.gradebook.model.GradeBookList;
 import edu.franklin.comp655.group5.gradebook.model.Student;
 import edu.franklin.comp655.group5.gradebook.model.StudentList;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.StreamingOutput;
 
 /**
  *
@@ -50,23 +46,6 @@ public class GradeBookResourceService implements GradeBookResource {
         return !name.isEmpty() && !Character.isWhitespace(name.charAt(0));
     }
 
-    private GradeBook validateGradeBookId(Long gradeBookId) {
-        return validateGradeBookId(gradeBookId, gradeBookList);
-    }
-
-    private GradeBook validateGradeBookId(Long gradeBookId,
-            GradeBookList gradeBookList) {
-        GradeBook gradeBook = gradeBookList.getGradeBookById(gradeBookId);
-
-        if (gradeBook == null) {
-            throw new WebApplicationException("There is no GradeBook "
-                    + "with the given id: " + gradeBookId,
-                    Response.Status.NOT_FOUND);
-        }
-
-        return gradeBook;
-    }
-
     @Override
     public Response createGradeBook(String name) {
 
@@ -97,11 +76,9 @@ public class GradeBookResourceService implements GradeBookResource {
     }
 
     @Override
-    public StreamingOutput getAllGradeBooks() {
-        return (OutputStream outputStream) -> {
-            PrintStream writer = new PrintStream(outputStream);
-            writer.print(gradeBookList.toString());
-        };
+    public Response getAllGradeBooks() {
+        return Response.status(Response.Status.OK)
+                .entity(gradeBookList).build();
     }
 
     @Override
@@ -149,7 +126,7 @@ public class GradeBookResourceService implements GradeBookResource {
 
     @Override
     public Response deleteSecondaryGradeBook(Long gradeBookId) {
-        //validateGradeBookId(gradeBookId);
+
         if (!gradeBookList.containsId(gradeBookId)) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("There is no GradeBook "
@@ -175,12 +152,20 @@ public class GradeBookResourceService implements GradeBookResource {
                             + "with the given id: " + gradeBookId).build();
         }
 
+        Student current = gradeBook.getStudent(name);
+
+        if (current != null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("A grade already exists in the given GradeBook "
+                            + "with the given student name: " + name).build();
+        }
+
         if (!isValidGrade(grade)) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(grade + " is not a valid grade.").build();
         }
 
-        Student current = new Student();
+        current = new Student();
         current.setName(name);
         current.setGrade(grade);
 
@@ -199,20 +184,23 @@ public class GradeBookResourceService implements GradeBookResource {
     }
 
     @Override
-    public StreamingOutput getStudent(Long gradeBookId, String name) {
-        return (OutputStream outputStream) -> {
-            GradeBook gradeBook = validateGradeBookId(gradeBookId);
-            Student student = gradeBook.getStudent(name);
+    public Response getStudent(Long gradeBookId, String name) {
+        GradeBook gradeBook = gradeBookList.getGradeBookById(gradeBookId);
 
-            if (student == null) {
-                throw new WebApplicationException("There is no student "
-                        + "in the given GradeBook with the given student name: "
-                        + name, Response.Status.NOT_FOUND);
-            }
+        if (gradeBook == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("There is no GradeBook "
+                            + "with the given id: " + gradeBookId).build();
+        }
 
-            PrintStream writer = new PrintStream(outputStream);
-            writer.print(student.toString());
-        };
+        Student current = gradeBook.getStudent(name);
+
+        if (current == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("There is no student in the given GradeBook "
+                            + "with the given student name: " + name).build();
+        }
+        return Response.status(Response.Status.OK).entity(current).build();
     }
 
     @Override
@@ -256,14 +244,17 @@ public class GradeBookResourceService implements GradeBookResource {
     }
 
     @Override
-    public StreamingOutput getAllStudents(Long gradeBookId) {
-        return (OutputStream outputStream) -> {
-            GradeBook gradeBook = validateGradeBookId(gradeBookId);
+    public Response getAllStudents(Long gradeBookId) {
+        GradeBook gradeBook = gradeBookList.getGradeBookById(gradeBookId);
 
-            StudentList studentList = gradeBook.fetchStudentList();
-            PrintStream writer = new PrintStream(outputStream);
-            writer.print(studentList.toString());
-        };
+        if (gradeBook == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("There is no GradeBook "
+                            + "with the given id: " + gradeBookId).build();
+        }
+        StudentList studentList = gradeBook.fetchStudentList();
+
+        return Response.status(Response.Status.OK).entity(studentList).build();
     }
 
     @Override
